@@ -8,6 +8,7 @@
             margin: 0;
             background-color: rgb(219, 219, 219);
             padding: 0;
+            height: 100%;
         }
  
         h1 {
@@ -56,6 +57,24 @@
             text-align: center;
             flex: 1;
         }
+        h2 {
+            padding: 5px;
+
+        }
+        Button {
+            padding: 10px;
+            border-radius: 30px;
+            margin: 20px;
+            background-color:  rgb(235, 235, 235);
+            text-decoration:none;
+            font-family: Arial, Helvetica, sans-serif;
+            border-color: #7af848;
+            color: #7af848;
+            border-style:solid;
+            font-size: 15px;
+
+
+        }
     </style>
 </head>
 <body>
@@ -69,34 +88,69 @@
     </header>
 
     <main>
-         <section style="padding: 10px;">
-            <p>I am learning web making.</p>
-            <img src="photo.jpg.jpg" alt="A photo of me">
-        </section>
-
-        <section>
-            <h1>Things I'm learning</h1>
-            <ol>
-                <li>HTML structure</li>
-                <li>CSS styling</li>
-                <li>JavaScript basics</li>
-            </ol>
-        </section>
-        <section class="skills">
-            <div class=" card">
-                <h3>HTML</h3>
-                <p>Structure & layout</p>
-            </div>
-            <div class="card">
-                <h3>JavaScript</h3>
-                <p>Interactivity</p>
-            </div>
-        </section>
+         <section>
+            <h2>My To-Do List</h2>
+            <input type="text" id="taskInput" placeholder="Enter a new task...">
+            <button id="addButton">Add Task</button>
+            <ul id="taskList"></ul>
+         </section>
+         <script>
+         let tasks = [];
+         const taskInput = document.getElementById("taskInput");
+         const addButton = document.getElementById("addButton");
+         const taskList = document.getElementById("taskList");
+         
+         function renderTasks() {
+            taskList.innerHTML = "";
+            
+            tasks.forEach(function(task, index) {
+                const li = document.createElement("li");
+                li.textContent = task.title;
+                
+                if (task.completed) {
+                    li.style.textDecoration = "line-through";
+                }
+                
+                li.addEventListener("click", function() {
+                    tasks[index].completed = !tasks[index].completed;
+                    renderTasks();
+                });
+                
+                const deleteBtn = document.createElement("button");
+                deleteBtn.textContent = "Delete";
+                deleteBtn.style.marginLeft = "10px";
+                
+                deleteBtn.addEventListener("click", function(event) {
+                    event.stopPropagation();
+                    tasks.splice(index, 1);
+                    renderTasks();
+                });
+                
+                li.appendChild(deleteBtn);
+                taskList.appendChild(li);
+            });
+        }
+        
+        addButton.addEventListener("click", function() {
+            const taskTitle = taskInput.value;
+            
+            if (taskTitle === "") {
+                return;
+            }
+            
+            tasks.push({ title: taskTitle, completed: false });
+            taskInput.value = "";
+            renderTasks();
+        });
+        
+        renderTasks();
+        </script>
     </main>
 
     <footer>
-        <p>Built by Rupam — Day 5 of my coding journey.</p>
+        <p>Built by Rupam — Day 10 of my coding journey.</p>
     </footer>
+    
 
 </body>
 </html>
